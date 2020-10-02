@@ -6,37 +6,43 @@ const axios = require('axios').default;
 
 const app = express();
 
+const port = process.env.PORT || 1234;
+
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }))
+
 
 // this is where all the loaded API News Information is stored after the axios call
 var articles = [];
 
+// this makes a GET Request to any valid path with header configurations
+function makeGetRequest(path, config) {
+    return new Promise((resolve, reject) => {
+        axios.get(path, config)
+        .then(response => {
+            var result = response.data.articles;
+            console.log(`Processing '${path}' `);
+            resolve(result);
+        }).catch(err => reject(err));
+    })
+}
 // index route
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
     const config = {
         headers: {
             'Content-Type': 'application/json', 
-            // Authorization API KEY NEEDS to be hidden 
+            
             'Authorization': '9c6963310bad43209ced74318e40b0a8'
         }, params: {
             'country': 'us' 
         }
     }
-    axios.get('https://newsapi.org/v2/top-headlines', config)
-    .then(response => {
-        articles = response.data.articles;
-
-        if (articles.length > -1) {
-            console.log("Data Recieved!");
-        }
-    })
-    .catch(error => console.error(error));
+    articles = await makeGetRequest('https://newsapi.org/v2/top-headlines', config);
     res.render("index", {
         articles: articles
      });
 });
 
-app.listen(1234, () => {
-    console.log("Up and running");
+app.listen(port, () => {
+    console.log(`Project loaded on port ${port}`);
 })
