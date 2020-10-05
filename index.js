@@ -12,6 +12,7 @@ app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }))
 
 const URLSearchParams = require('url');
+const { POINT_CONVERSION_UNCOMPRESSED } = require("constants");
 
 // this is where all the loaded API News Information is stored after the axios call
 var articles = [];
@@ -45,16 +46,20 @@ app.get('/', async (req, res) => {
      });
 });
 
-app.get('/sources/:name', (req, res) => {
-    currConfig = {
-        ...defaultConfig,
+app.get('/sources/:name', async (req, res) => {
+    let currConfig = {
+        headers: {
+            'Content-Type': 'application/json', 
+            'Authorization': '9c6963310bad43209ced74318e40b0a8'
+        },
         params: {
-
+            sources: `${req.params.name}`
         }
     }
-    let currentArticles = await makeGetRequest('http://newsapi.org/v2/top-headlines', defaultConfig)
+    let currentArticles = await makeGetRequest('http://newsapi.org/v2/top-headlines', currConfig);
     res.render("pages/sources", {
-        source: `${req.params.name}`
+        source: `${req.params.name}`,
+        articles: currentArticles
     });
 })
 
