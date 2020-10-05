@@ -35,7 +35,17 @@ function makeGetRequest(path, config) {
             var result = response.data.articles;
             console.log(`Processing '${path}' `);
             resolve(result);
-        }).catch(err => reject(err));
+        }).catch(err => {
+            if (err.response) {
+                console.log(error.response.status);
+                console.log(error.response.data);
+            } else if (err.request) {
+                console.log(err.request);
+            } else { 
+                console.log(`Error: ${err.message} `);
+            }
+            reject(err); 
+        });
     })
 }
 // index route
@@ -61,6 +71,10 @@ app.get('/sources/:name', async (req, res) => {
         source: `${req.params.name}`,
         articles: currentArticles
     });
+})
+
+app.use((req, res) => {
+    res.status(404).render("pages/404")
 })
 
 app.listen(port, () => {
