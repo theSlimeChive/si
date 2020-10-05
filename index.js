@@ -11,12 +11,23 @@ const port = process.env.PORT || 1234;
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }))
 
+const URLSearchParams = require('url');
 
 // this is where all the loaded API News Information is stored after the axios call
 var articles = [];
 
+
+const defaultConfig = {
+    headers: {
+        'Content-Type': 'application/json', 
+        'Authorization': '9c6963310bad43209ced74318e40b0a8'
+    }, params: {
+        'country': 'us' 
+    }
+}
 // this makes a GET Request to any valid path with header configurations
 function makeGetRequest(path, config) {
+    
     return new Promise((resolve, reject) => {
         axios.get(path, config)
         .then(response => {
@@ -28,20 +39,24 @@ function makeGetRequest(path, config) {
 }
 // index route
 app.get('/', async (req, res) => {
-    const config = {
-        headers: {
-            'Content-Type': 'application/json', 
-            
-            'Authorization': '9c6963310bad43209ced74318e40b0a8'
-        }, params: {
-            'country': 'us' 
-        }
-    }
-    articles = await makeGetRequest('https://newsapi.org/v2/top-headlines', config);
-    res.render("index", {
+    articles = await makeGetRequest('https://newsapi.org/v2/top-headlines', defaultConfig);
+    res.render("pages/index", {
         articles: articles
      });
 });
+
+app.get('/sources/:name', (req, res) => {
+    currConfig = {
+        ...defaultConfig,
+        params: {
+
+        }
+    }
+    let currentArticles = await makeGetRequest('http://newsapi.org/v2/top-headlines', defaultConfig)
+    res.render("pages/sources", {
+        source: `${req.params.name}`
+    });
+})
 
 app.listen(port, () => {
     console.log(`Project loaded on port ${port}`);

@@ -12,7 +12,12 @@
   </head>
   <body>
     <div class="container">
-        <h1>Si News Outlet</h1>
+        <%- include('../partials/header') %>
+
+        <div class="jumbotron">
+          <h2 class="display-3">API Powered News </h2>
+          <p class="subtitle">News Generated from <a href="https://newsapi.org/">News API</a></p>
+        </div>
         <% articles.forEach(article => { %>
             <li><%=article.title %></li>
          <%   });%>
