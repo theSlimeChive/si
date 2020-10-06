@@ -10,12 +10,14 @@ const port = process.env.PORT || 1234;
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(express.static(__dirname + '/public'))
 
 const URLSearchParams = require('url');
 const { POINT_CONVERSION_UNCOMPRESSED } = require("constants");
 
 // this is where all the loaded API News Information is stored after the axios call
 var articles = [];
+var topFourHeadlines = []
 
 
 const defaultConfig = {
@@ -50,13 +52,16 @@ function makeGetRequest(path, config) {
 }
 // index route
 app.get('/', async (req, res) => {
+
     articles = await makeGetRequest('https://newsapi.org/v2/top-headlines', defaultConfig);
+    topFourHeadlines = await articles.splice(0, 4)
     res.render("pages/index", {
-        articles: articles
+        articles: articles,
+        headlines: topFourHeadlines
      });
 });
 
-app.get('/sources/:name', async (req, res) => {
+app.get('/sources/:name', async (req, res, next) => {
     let currConfig = {
         headers: {
             'Content-Type': 'application/json', 
@@ -67,15 +72,21 @@ app.get('/sources/:name', async (req, res) => {
         }
     }
     let currentArticles = await makeGetRequest('http://newsapi.org/v2/top-headlines', currConfig);
+    if (currentArticles.length < 0) {
+        const err = new Error("Not found");
+        err.status = 404;
+        next(err);
+    } 
     res.render("pages/sources", {
         source: `${req.params.name}`,
         articles: currentArticles
-    });
+    });    
+    
+    
 })
 
-app.use((req, res) => {
-    res.status(404).render("pages/404")
-})
+
+
 
 app.listen(port, () => {
     console.log(`Project loaded on port ${port}`);
