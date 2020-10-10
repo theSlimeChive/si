@@ -12,9 +12,6 @@ app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.static(__dirname + '/public'))
 
-const URLSearchParams = require('url');
-const { POINT_CONVERSION_UNCOMPRESSED } = require("constants");
-
 // this is where all the loaded API News Information is stored after the axios call
 var articles = [];
 var topFourHeadlines = []
@@ -25,7 +22,7 @@ const defaultConfig = {
         'Content-Type': 'application/json', 
         'Authorization': '9c6963310bad43209ced74318e40b0a8'
     }, params: {
-        'country': 'us' 
+        'country': 'us'
     }
 }
 // this makes a GET Request to any valid path with header configurations

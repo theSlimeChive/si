@@ -15,7 +15,7 @@
   <body>
     <%- include('../partials/header') %>
 
-    <div class="container">
+    <div class="container-sm">
         
           <div id="carouselExampleFade" class="carousel slide carousel-fade" data-ride="carousel">
 
@@ -25,7 +25,7 @@
                 <div class="carousel-caption ">
                   <h5 ><%= headlines[0].title %></h5>
                   <button class="btn btn-info">
-                    <a href="<%= headlines[0].url %>">Article</a>
+                    <a class="text-white" href="<%= headlines[0].url %>">Article</a>
                   </button>
                 </div>
               </div>
@@ -35,7 +35,7 @@
                 <div class="carousel-caption ">
                   <h5 ><%= headlines[1].title %></h5>
                   <button class="btn btn-info">
-                    <a href="<%- headlines[1].url %>">Article</a>
+                    <a class="text-white" href="<%- headlines[1].url %>">Article</a>
                   </button>
                 </div>
               </div>
@@ -63,10 +63,12 @@
           <div class="row">
             <% articles.forEach(article => { %>
 
-              <div class="card col-sm-3 col-md-4 col-lg-3" id="articles">
+              <div class="card col-lg-5" id="articles">
                 <img src="<%= article.urlToImage %>" alt="">
                 <div class="card-body">
                   <h5 class="card-title"><%= article.title %></h5>
+                  <p class="card-text"><%= article.description %></p>
+                  <a href="<%= article.url %>" class="card-link">Link to Article</a>
                 </div>
               </div>
 
