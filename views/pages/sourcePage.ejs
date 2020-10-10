@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All Sources</title>
+    <title>Top Articles for <%= source %></title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 </head>
 <body>
@@ -12,14 +12,25 @@
     <div class="container-fluid">
         <!-- Jumbotron with Custom Title-->
         <div class="jumbotron">
-            <h2 class="display-4">All English Sources</h2>
+            <!-- So what i did was instead of trying to catch all the 404 not found errors in express.
+            I decided that it would be fine to check that articles length
+            because the request is being made and the articles variable
+            is awaiting the response. Therefore if there are no articles...
+            there must be something wrong with the reqest, not found.-->
+            <% if(articles.length > 0) { %>
+                <h1 class="display-4">Showing News for: <span class="text-uppercase"><%= source %></span></h1>
+            <% } else {%>
+                <h1 class="display-4">'<%= source %>' was not found ;(</h1>
+            <% } %>
         </div>
         
         
 
         <div class="container">
         <!-- News for the title -->
-            
+        <% articles.forEach(article => { %>
+            <li><%= article.title %></li>
+        <%   });%>
         </div>
         
     </div>

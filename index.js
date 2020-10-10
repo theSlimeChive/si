@@ -58,7 +58,12 @@ app.get('/', async (req, res) => {
      });
 });
 
-app.get('/sources/:name', async (req, res, next) => {
+app.get('/sources', async (req, res) => {
+    let newsSources = await makeGetRequest('https://newsapi.org/v2/sources?language=en', defaultConfig)
+    res.render('pages/sources', { sources: newsSources });
+});
+
+app.get('/sources/:name', async (req, res) => {
     let currConfig = {
         headers: {
             'Content-Type': 'application/json', 
@@ -69,12 +74,8 @@ app.get('/sources/:name', async (req, res, next) => {
         }
     }
     let currentArticles = await makeGetRequest('http://newsapi.org/v2/top-headlines', currConfig);
-    if (currentArticles.length < 0) {
-        const err = new Error("Not found");
-        err.status = 404;
-        next(err);
-    } 
-    res.render("pages/sources", {
+    
+    res.render("pages/sourcePage", {
         source: `${req.params.name}`,
         articles: currentArticles
     });    
