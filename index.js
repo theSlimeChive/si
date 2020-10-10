@@ -26,7 +26,7 @@ const defaultConfig = {
     }
 }
 // this makes a GET Request to any valid path with header configurations
-function makeGetRequest(path, config) {
+function makeArticleRequest(path, config) {
     
     return new Promise((resolve, reject) => {
         axios.get(path, config)
@@ -47,10 +47,31 @@ function makeGetRequest(path, config) {
         });
     })
 }
+
+function makeSourceRequest(path, config) {
+    return new Promise((resolve, reject) => {
+        axios.get(path, config)
+        .then(response => {
+            var result = response.data.sources;
+            console.log(`Processing '${path}' `);
+            resolve(result);
+        }).catch(err => {
+            if (err.response) {
+                console.log(error.response.status);
+                console.log(error.response.data);
+            } else if (err.request) {
+                console.log(err.request);
+            } else { 
+                console.log(`Error: ${err.message} `);
+            }
+            reject(err); 
+        });
+    })
+}
 // index route
 app.get('/', async (req, res) => {
 
-    articles = await makeGetRequest('https://newsapi.org/v2/top-headlines', defaultConfig);
+    articles = await makeArticleRequest('https://newsapi.org/v2/top-headlines', defaultConfig);
     topFourHeadlines = await articles.splice(0, 4)
     res.render("pages/index", {
         articles: articles,
@@ -59,8 +80,11 @@ app.get('/', async (req, res) => {
 });
 
 app.get('/sources', async (req, res) => {
-    let newsSources = await makeGetRequest('https://newsapi.org/v2/sources?language=en', defaultConfig)
-    res.render('pages/sources', { sources: newsSources });
+
+    let sourcesArr = await makeSourceRequest('https://newsapi.org/v2/sources?language=en', defaultConfig)
+    res.render('pages/sources', {
+        sources: sourcesArr
+    })
 });
 
 app.get('/sources/:name', async (req, res) => {
@@ -73,14 +97,12 @@ app.get('/sources/:name', async (req, res) => {
             sources: `${req.params.name}`
         }
     }
-    let currentArticles = await makeGetRequest('http://newsapi.org/v2/top-headlines', currConfig);
+    let currentArticles = await makeArticleRequest('http://newsapi.org/v2/top-headlines', currConfig);
     
     res.render("pages/sourcePage", {
         source: `${req.params.name}`,
         articles: currentArticles
     });    
-    
-    
 })
 
 

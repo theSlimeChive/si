@@ -19,7 +19,17 @@
 
         <div class="container">
         <!-- News for the title -->
-            
+            <div class="row">
+                <% sources.forEach(source => { %>
+                    <div class="card w-100 my-2" id="sources">
+                       <div class="card-body">
+                           <h5 class="card-title"><%= source.name %> <span class="badge badge-pill badge-info text-capitalize"><%= source.category %> </span> </h5>
+                           <p class="card-text"><%= source.description %> </p>
+                           <a href="/sources/<%= source.id %>" class="card-link">Link to posts by <%= source.name %> </a>
+                       </div> 
+                    </div>
+                <% }) %>
+            </div>
         </div>
         
     </div>
