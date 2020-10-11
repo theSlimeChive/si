@@ -2,7 +2,7 @@ const express = require("express");
 
 const bodyParser = require("body-parser");
 
-const axios = require('axios').default;
+const makeRequest = require("./controllers/helperFunctions/requests");
 
 const app = express();
 
@@ -12,9 +12,12 @@ app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.static(__dirname + '/public'))
 
+
+
+
 // this is where all the loaded API News Information is stored after the axios call
-var articles = [];
-var topFourHeadlines = []
+let articles = [];
+
 
 
 const defaultConfig = {
@@ -25,67 +28,24 @@ const defaultConfig = {
         'country': 'us'
     }
 }
-// this makes a GET Request to any valid path with header configurations
-function makeArticleRequest(path, config) {
-    
-    return new Promise((resolve, reject) => {
-        axios.get(path, config)
-        .then(response => {
-            var result = response.data.articles;
-            console.log(`Processing '${path}' `);
-            resolve(result);
-        }).catch(err => {
-            if (err.response) {
-                console.log(error.response.status);
-                console.log(error.response.data);
-            } else if (err.request) {
-                console.log(err.request);
-            } else { 
-                console.log(`Error: ${err.message} `);
-            }
-            reject(err); 
-        });
-    })
-}
 
-function makeSourceRequest(path, config) {
-    return new Promise((resolve, reject) => {
-        axios.get(path, config)
-        .then(response => {
-            var result = response.data.sources;
-            console.log(`Processing '${path}' `);
-            resolve(result);
-        }).catch(err => {
-            if (err.response) {
-                console.log(error.response.status);
-                console.log(error.response.data);
-            } else if (err.request) {
-                console.log(err.request);
-            } else { 
-                console.log(`Error: ${err.message} `);
-            }
-            reject(err); 
-        });
-    })
-}
-// index route
 app.get('/', async (req, res) => {
 
-    articles = await makeArticleRequest('https://newsapi.org/v2/top-headlines', defaultConfig);
-    topFourHeadlines = await articles.splice(0, 4)
+    articles = await makeRequest('Article', 'https://newsapi.org/v2/top-headlines', defaultConfig);
+    let topFourHeadlines = await articles.splice(0, 4)
     res.render("pages/index", {
         articles: articles,
         headlines: topFourHeadlines
      });
 });
 
-app.get('/sources', async (req, res) => {
+/* app.get('/sources', async (req, res) => {
 
     let sourcesArr = await makeSourceRequest('https://newsapi.org/v2/sources?language=en', defaultConfig)
     res.render('pages/sources', {
         sources: sourcesArr
     })
-});
+}); */
 
 app.get('/sources/:name', async (req, res) => {
     let currConfig = {
@@ -97,7 +57,7 @@ app.get('/sources/:name', async (req, res) => {
             sources: `${req.params.name}`
         }
     }
-    let currentArticles = await makeArticleRequest('http://newsapi.org/v2/top-headlines', currConfig);
+    let currentArticles = await makeRequest('Article', 'http://newsapi.org/v2/top-headlines', currConfig);
     
     res.render("pages/sourcePage", {
         source: `${req.params.name}`,
