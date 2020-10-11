@@ -39,33 +39,6 @@ app.get('/', async (req, res) => {
      });
 });
 app.use('/sources', sourcesRouter);
-/* app.get('/sources', async (req, res) => {
-
-    let sourcesArr = await makeSourceRequest('https://newsapi.org/v2/sources?language=en', defaultConfig)
-    res.render('pages/sources', {
-        sources: sourcesArr
-    })
-}); */
-
-/*app.get('/sources/:name', async (req, res) => {
-    let currConfig = {
-        headers: {
-            'Content-Type': 'application/json', 
-            'Authorization': '9c6963310bad43209ced74318e40b0a8'
-        },
-        params: {
-            sources: `${req.params.name}`
-        }
-    }
-    let currentArticles = await makeRequest('Articlesd', 'http://newsapi.org/v2/top-headlines', currConfig);
-    
-    res.render("pages/sourcePage", {
-        source: `${req.params.name}`,
-        articles: currentArticles
-    });    
-})
-
-*/
 
 
 app.listen(port, () => {
