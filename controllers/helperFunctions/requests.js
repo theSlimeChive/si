@@ -10,7 +10,7 @@ const makeRequest = (resourceType, URLPath, Configurations) => {
         axios.get(URLPath, Configurations)
         .then(response => {
             let result ;
-            if(resourceType == 'Article') { result = response.data.articles }
+            if(resourceType == 'Articles') { result = response.data.articles }
             else if( resourceType == 'Sources') { result = response.data.sources }
             else { result = null }
             console.log(`Processing '${URLPath}' `);

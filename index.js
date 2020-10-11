@@ -3,7 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 
 const makeRequest = require("./controllers/helperFunctions/requests");
-
+const sourcesRouter = require('./controllers/sources');
 const app = express();
 
 const port = process.env.PORT || 1234;
@@ -31,14 +31,14 @@ const defaultConfig = {
 
 app.get('/', async (req, res) => {
 
-    articles = await makeRequest('Article', 'https://newsapi.org/v2/top-headlines', defaultConfig);
+    articles = await makeRequest('Articles', 'https://newsapi.org/v2/top-headlines', defaultConfig);
     let topFourHeadlines = await articles.splice(0, 4)
     res.render("pages/index", {
         articles: articles,
         headlines: topFourHeadlines
      });
 });
-
+app.use('/sources', sourcesRouter);
 /* app.get('/sources', async (req, res) => {
 
     let sourcesArr = await makeSourceRequest('https://newsapi.org/v2/sources?language=en', defaultConfig)
@@ -47,7 +47,7 @@ app.get('/', async (req, res) => {
     })
 }); */
 
-app.get('/sources/:name', async (req, res) => {
+/*app.get('/sources/:name', async (req, res) => {
     let currConfig = {
         headers: {
             'Content-Type': 'application/json', 
@@ -57,7 +57,7 @@ app.get('/sources/:name', async (req, res) => {
             sources: `${req.params.name}`
         }
     }
-    let currentArticles = await makeRequest('Article', 'http://newsapi.org/v2/top-headlines', currConfig);
+    let currentArticles = await makeRequest('Articlesd', 'http://newsapi.org/v2/top-headlines', currConfig);
     
     res.render("pages/sourcePage", {
         source: `${req.params.name}`,
@@ -65,7 +65,7 @@ app.get('/sources/:name', async (req, res) => {
     });    
 })
 
-
+*/
 
 
 app.listen(port, () => {
