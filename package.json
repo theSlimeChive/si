@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/knottyChive/si#readme",
   "dependencies": {
+    "@material-ui/core": "^4.11.2",
     "axios": "^0.20.0",
     "body-parser": "^1.19.0",
     "ejs": "^3.1.5",
