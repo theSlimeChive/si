@@ -1,0 +1,6 @@
+/* 
+    The Headline Block is the main display of top news.
+    This Component will recieve an array of news called bigFour.
+    This component should be a functional component 
+
+*/
