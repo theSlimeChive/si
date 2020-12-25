@@ -13,7 +13,7 @@ const makeRequest = (resourceType, URLPath, Configurations) => {
             if(resourceType == 'Articles') { result = response.data.articles }
             else if( resourceType == 'Sources') { result = response.data.sources }
             else { result = null }
-            console.log(`Processing '${URLPath}' `);
+            //console.log(`Processing '${URLPath}' `);
             resolve(result);
         }).catch(err => {
             if (err.response) {
