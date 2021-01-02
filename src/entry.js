@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link, BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -8,8 +9,32 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Navbar from './components/Navbar/navbar';
 import Home from './pages/Home/home';
-import Sources from './pages/Sources/sources'
+import Sources from './pages/Sources/sources';
+import { makeRequest } from './controllers/helperFunctions/requests';
+const defaultConfig = {
+    headers: {
+        'Content-Type': 'application/json', 
+        'Authorization': '9c6963310bad43209ced74318e40b0a8'
+    }, params: {
+        'country': 'us'
+    }
+}
 class Root extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            articles: []
+        }
+    }
+    async componentDidMount() {
+        try {
+            let _articles = await axios.get('https://newsapi.org/v2/top-headlines', defaultConfig)
+            console.log(_articles)
+        } catch(error) {
+            console.log(error);
+        }
+        
+    }
     render() {
         return (
             <Router>

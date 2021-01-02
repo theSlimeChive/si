@@ -1,4 +1,4 @@
-const axios = require('axios').default;
+import axios from 'axios'
 
 
 // make a request using axios that has parameters 
