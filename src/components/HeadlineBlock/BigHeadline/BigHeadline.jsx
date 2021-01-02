@@ -5,3 +5,6 @@
     The data is passed in props as an object
 
 */
+const BigHeadline = () => {
+    
+}
