@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Link, BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import axios from 'axios';
-import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 
 /* This is the entry file to the web project, it should display the navbar, the HeadlineBlock, the NewsGrid, and the Footer */
@@ -11,6 +11,10 @@ import Navbar from './components/Navbar/navbar';
 import Home from './pages/Home/home';
 import Sources from './pages/Sources/sources';
 import { makeRequest } from './controllers/helperFunctions/requests';
+
+
+
+import 'bootstrap/dist/css/bootstrap.min.css';
 const defaultConfig = {
     headers: {
         'Content-Type': 'application/json', 

@@ -1,0 +1,11 @@
+// Variables 
+$background: #14213D;
+$text-color: #F24236;
+
+.navbar {
+    min-height: 10vh;
+    background-color: $background;
+    a {
+        color: $text-color;
+    }
+}
