@@ -19,13 +19,12 @@
   },
   "homepage": "https://github.com/knottyChive/si#readme",
   "dependencies": {
-    "@material-ui/core": "^4.11.2",
     "axios": "^0.20.0",
     "body-parser": "^1.19.0",
-    "ejs": "^3.1.5",
-    "express": "^4.17.1",
+    "bootstrap": "^4.5.3",
     "parcel-bundler": "^1.12.4",
     "react": "^17.0.1",
+    "react-bootstrap": "^1.4.0",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0"
   }
